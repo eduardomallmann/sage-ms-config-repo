@@ -1,0 +1,50 @@
+server:
+  port: ${PORT:58091}
+
+negotiation:
+  channel: ${NEGOTIATION_CHANNEL:negotiation-out-0}
+
+spring:
+  application:
+    name: sage-ms-negotiation
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ssZ
+    serialization:
+      write_dates_as_timestamps: false
+    deserialization:
+      read_unknown_enum_values_as_null: true
+      fail_on_unknown_properties: false
+  cloud.stream:
+    bindings:
+      enterprise-in-0:
+        destination: enterprise
+        binder: kafka
+      negotiation-out-0:
+        destination: negotiation
+        binder: rabbit
+        producer.exchangeType: direct
+    binders:
+      kafka:
+        type: kafka
+        environment.spring.cloud.stream.kafka.binder.brokers: localhost:9092
+      rabbit:
+        type: rabbit
+        environment.spring.rabbitmq.host: localhost
+    function:
+      definition: enterprise
+    main:
+      allow-bean-definition-overriding: true
+
+  management:
+    endpoint:
+      health:
+        show-components: always
+        show-details: always
+    health:
+      rabbit:
+        enabled: false
+      binders:
+        enabled: true
+
+
+

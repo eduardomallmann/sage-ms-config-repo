@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        response-timeout: 5m
+      actuator:
+        verbose:
+          enabled: true
+      routes:
+        - id: enterprises
+          uri: ${ENTERPRISE_SERVICE:http://localhost:58090}/enterprises
+          predicates:
+            - Path=/enterprises/**
+        - id: negotiation
+          uri: ${NEGOTIATION_SERVICE:http://localhost:58091}/negotiations
+          predicates:
+            - Path=/negotiations/**
+
+management:
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints.web.exposure.include: '*'
