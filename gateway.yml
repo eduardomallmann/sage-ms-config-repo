@@ -8,18 +8,13 @@ spring:
           enabled: true
       routes:
         - id: enterprises
-          uri: ${ENTERPRISE_SERVICE:http://localhost:58090}/enterprises
+          uri: ${ENTERPRISE_SERVICE:http://sage-ms-enterprise}/enterprises
           predicates:
             - Path=/enterprises/**
         - id: negotiation
-          uri: ${NEGOTIATION_SERVICE:http://localhost:58091}/negotiations
+          uri: ${NEGOTIATION_SERVICE:http://sage-ms-negotiation}/negotiations
           predicates:
             - Path=/negotiations/**
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
 
 management:
   endpoint:
