@@ -6,13 +6,16 @@ spring:
       actuator:
         verbose:
           enabled: true
+      discovery:
+        locator:
+          enabled: true
       routes:
         - id: enterprises
-          uri: ${ENTERPRISE_SERVICE:http://sage-ms-enterprise}/enterprises
+          uri: lb://${ENTERPRISE_SERVICE:sage-ms-enterprise}/enterprises
           predicates:
             - Path=/enterprises/**
         - id: negotiation
-          uri: ${NEGOTIATION_SERVICE:http://sage-ms-negotiation}/negotiations
+          uri: lb://${NEGOTIATION_SERVICE:sage-ms-negotiation}/negotiations
           predicates:
             - Path=/negotiations/**
 
@@ -23,3 +26,10 @@ management:
     shutdown:
       enabled: true
   endpoints.web.exposure.include: '*'
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
